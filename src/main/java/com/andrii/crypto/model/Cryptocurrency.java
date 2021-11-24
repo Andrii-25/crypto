@@ -9,22 +9,30 @@ public class Cryptocurrency {
     @Id
     private int id;
 
-    private String name;
+    private String curr1;
 
-    private String abbreviated;
+    private String curr2;
 
-    private int price;
+    private String lprice;
 
-    private String currencyPrice;
+    private String createdAt;
 
     public Cryptocurrency() {
     }
 
-    public Cryptocurrency(String name, String abbreviated, int price, String currencyPrice) {
-        this.name = name;
-        this.abbreviated = abbreviated;
-        this.price = price;
-        this.currencyPrice = currencyPrice;
+    public Cryptocurrency(String curr1, String curr2, String lprice, String createdAt) {
+        this.curr1 = curr1;
+        this.curr2 = curr2;
+        this.lprice = lprice;
+        this.createdAt = createdAt;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public int getId() {
@@ -35,35 +43,27 @@ public class Cryptocurrency {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCurr1() {
+        return curr1;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCurr1(String curr1) {
+        this.curr1 = curr1;
     }
 
-    public String getAbbreviated() {
-        return abbreviated;
+    public String getCurr2() {
+        return curr2;
     }
 
-    public void setAbbreviated(String abbreviated) {
-        this.abbreviated = abbreviated;
+    public void setCurr2(String curr2) {
+        this.curr2 = curr2;
     }
 
-    public int getPrice() {
-        return price;
+    public String getLprice() {
+        return lprice;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getCurrencyPrice() {
-        return currencyPrice;
-    }
-
-    public void setCurrencyPrice(String currencyPrice) {
-        this.currencyPrice = currencyPrice;
+    public void setLprice(String lprice) {
+        this.lprice = lprice;
     }
 }
