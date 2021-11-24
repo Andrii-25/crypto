@@ -2,17 +2,23 @@ package com.andrii.crypto.service;
 
 import com.andrii.crypto.model.Cryptocurrency;
 import com.andrii.crypto.repository.CryptocurrencyRepository;
+import com.andrii.crypto.utils.CsvReport;
 import com.andrii.crypto.utils.Utils;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.*;
 
 @Service
@@ -21,6 +27,7 @@ public class CryptocurrencyService {
     private final HttpHeaders headers = new HttpHeaders();
     private final RestTemplate restTemplate = new RestTemplate();
     private final Utils utils = new Utils();
+    private static final Logger log = LoggerFactory.getLogger(CryptocurrencyService.class);
 
     @Autowired
     private CryptocurrencyRepository cryptocurrencyRepository;
@@ -62,6 +69,25 @@ public class CryptocurrencyService {
         Page<Cryptocurrency> pageCrypto;
         pageCrypto = cryptocurrencyRepository.findByCurr1(name, paging);
         return pageCrypto.getContent();
+    }
+
+    private List<CsvReport> createCsvRecords() {
+        List<CsvReport> records = new ArrayList<>();
+        records.add(new CsvReport("BTC", getWithMaxPrice("BTC").getLprice(), getWithMinPrice("BTC").getLprice()));
+        records.add(new CsvReport("ETH", getWithMaxPrice("ETH").getLprice(), getWithMinPrice("ETH").getLprice()));
+        records.add(new CsvReport("XRP", getWithMaxPrice("XRP").getLprice(), getWithMinPrice("XRP").getLprice()));
+        return records;
+    }
+
+    public void writeToCsv(Writer writer) {
+        try {
+            CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);
+            for (CsvReport csvReport : createCsvRecords()) {
+                csvPrinter.printRecord(csvReport.getName(), csvReport.getMinPrice(), csvReport.getMaxPrice());
+            }
+        } catch (IOException e) {
+            log.error(e.getMessage());
+        }
     }
 
     private Cryptocurrency[] getCryptoCurrenciesPrices() {

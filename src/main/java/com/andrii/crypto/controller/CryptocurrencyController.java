@@ -5,6 +5,8 @@ import com.andrii.crypto.service.CryptocurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -32,5 +34,12 @@ public class CryptocurrencyController {
             @RequestParam(defaultValue = "10", name = "size") int size) {
 
         return cryptocurrencyService.getAllCryptoPage(name, page, size);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/csv")
+    public void generateCsv(HttpServletResponse servletResponse) throws IOException {
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition","attachment; filename=\"cryptocurrencies.csv\"");
+        cryptocurrencyService.writeToCsv(servletResponse.getWriter());
     }
 }
