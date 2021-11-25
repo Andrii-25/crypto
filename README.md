@@ -15,11 +15,14 @@ https://github.com/Andrii-25/crypto.git ./myproject
 1.  Download repository
 2.  Uncompress to your desired directory
 
-## Go to the `resources/application.properties` file, and add the following content like it:
-`spring.data.mongodb.host=localhost
+### Go to the `resources/application.properties` file, and add the following content like it:
+ ```
+ spring.data.mongodb.host=localhost
  spring.data.mongodb.port=27017
- spring.data.mongodb.database=mydatabase
- spring.mvc.converters.preferred-json-mapper=gson`
+ spring.data.mongodb.database=mydatabase* 
+ spring.mvc.converters.preferred-json-mapper=gson
+ ```
+ 
 
 ## Steps to run
 1. Build the project using `mvn clean install`
@@ -27,7 +30,7 @@ https://github.com/Andrii-25/crypto.git ./myproject
 3. The web application is accessible via localhost:8080
 
 ## Alternatively, you can run the app without packaging it using:
-'mvn spring-boot:run'
+`mvn spring-boot:run`
 
 ## Routes
 
