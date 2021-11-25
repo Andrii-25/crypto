@@ -10,10 +10,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
+import org.springframework.data.domain.*;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -27,7 +24,7 @@ public class CryptocurrencyService {
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final Utils utils = new Utils();
-    private static final Logger log = LoggerFactory.getLogger(CryptocurrencyService.class);
+    private final Logger log = LoggerFactory.getLogger(CryptocurrencyService.class);
 
     @Autowired
     private CryptocurrencyRepository cryptocurrencyRepository;
@@ -40,6 +37,7 @@ public class CryptocurrencyService {
             cryptocurrency.setCreatedAt(utils.getCurrentDate());
             cryptocurrencyRepository.insert(cryptocurrency);
         }
+        log.info("Inserted new records to DB!");
     }
 
     private List<Cryptocurrency> getRecordsByCryptoName(String name) {
@@ -79,15 +77,11 @@ public class CryptocurrencyService {
         return records;
     }
 
-    public void writeToCsv(Writer writer) {
-        try {
+    public void writeToCsv(Writer writer) throws IOException {
             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);
             for (CsvReport csvReport : createCsvRecords()) {
                 csvPrinter.printRecord(csvReport.getName(), csvReport.getMinPrice(), csvReport.getMaxPrice());
             }
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
     }
 
     private Cryptocurrency[] getCryptoCurrenciesPrices() {

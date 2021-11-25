@@ -1,11 +1,7 @@
 package com.andrii.crypto.utils;
 
-import com.andrii.crypto.model.Cryptocurrency;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Utils {
@@ -17,6 +13,6 @@ public class Utils {
     }
 
     public int getRandomInt() {
-        return ThreadLocalRandom.current().nextInt(0, 100000);
+        return ThreadLocalRandom.current().nextInt(0, 10000000);
     }
 }

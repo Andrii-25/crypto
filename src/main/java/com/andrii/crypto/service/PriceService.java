@@ -3,9 +3,10 @@ package com.andrii.crypto.service;
 import com.andrii.crypto.utils.RestTemplateResponseErrorHandler;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +17,7 @@ public class PriceService {
 
     private final HttpHeaders headers = new HttpHeaders();
     private final RestTemplate restTemplate = new RestTemplate();
+    private final Logger log = LoggerFactory.getLogger(PriceService.class);
 
     public ResponseEntity<String> getLastPrices(String symbol1, String symbol2) {
             String url = "https://cex.io/api/last_price/" + symbol1 + "/" + symbol2;
