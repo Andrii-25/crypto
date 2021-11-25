@@ -3,6 +3,8 @@ package com.andrii.crypto.controller;
 import com.andrii.crypto.model.Cryptocurrency;
 import com.andrii.crypto.service.CryptocurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +21,7 @@ public class CryptocurrencyController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/minprice")
     public Cryptocurrency getWithMinPrice(@RequestParam String name) {
-        return cryptocurrencyService.getWithMinPrice(name);
+            return cryptocurrencyService.getWithMinPrice(name);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/maxprice")

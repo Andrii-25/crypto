@@ -1,9 +1,11 @@
 package com.andrii.crypto.service;
 
+import com.andrii.crypto.utils.RestTemplateResponseErrorHandler;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,11 +18,12 @@ public class PriceService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public ResponseEntity<String> getLastPrices(String symbol1, String symbol2) {
-        String url = "https://cex.io/api/last_price/" + symbol1 + "/" + symbol2;
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        HttpEntity<String> entity = new HttpEntity<>("body", headers);
-        return restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+            String url = "https://cex.io/api/last_price/" + symbol1 + "/" + symbol2;
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            HttpEntity<String> entity = new HttpEntity<>("body", headers);
+            restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler());
+            return restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
     }
 
     private ResponseEntity<String> getPriceBtcUsd() {

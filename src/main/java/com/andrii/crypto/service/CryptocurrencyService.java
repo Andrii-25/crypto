@@ -3,6 +3,7 @@ package com.andrii.crypto.service;
 import com.andrii.crypto.model.Cryptocurrency;
 import com.andrii.crypto.repository.CryptocurrencyRepository;
 import com.andrii.crypto.utils.CsvReport;
+import com.andrii.crypto.utils.RestTemplateResponseErrorHandler;
 import com.andrii.crypto.utils.Utils;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -24,7 +25,6 @@ import java.util.*;
 @Service
 public class CryptocurrencyService {
 
-    private final HttpHeaders headers = new HttpHeaders();
     private final RestTemplate restTemplate = new RestTemplate();
     private final Utils utils = new Utils();
     private static final Logger log = LoggerFactory.getLogger(CryptocurrencyService.class);
@@ -92,7 +92,7 @@ public class CryptocurrencyService {
 
     private Cryptocurrency[] getCryptoCurrenciesPrices() {
         String BASE_URL = "http://localhost:8080/";
-        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setErrorHandler(new RestTemplateResponseErrorHandler());
         return restTemplate.getForObject(BASE_URL + "all_prices", Cryptocurrency[].class);
     }
 }
